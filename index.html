@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Castle Clash</title>
+<title>Castle Busters</title>
 <!--
-  CASTLE CLASH - 2 player classroom game
+  CASTLE BUSTERS - 2 player classroom game
   All six images are already embedded in this file, so it works on its own. (Original image names:
     background.png            (sky + hills + grey card bar, no castles)
     castles.png               (blue castle on the left, red castle on the right)
@@ -54,7 +54,7 @@
   .qcard{position:absolute;top:70px;width:740px;height:262px;box-sizing:border-box;padding:14px 18px;border-radius:20px;
     background:linear-gradient(#fff6dc,#f3deaa);box-shadow:0 6px 18px rgba(0,0,0,.22),inset 0 0 0 3px rgba(255,255,255,.55),inset 0 0 34px rgba(150,105,40,.28);z-index:15;display:flex;flex-direction:column;gap:12px}
   .qcard.blue{left:20px;border:4px solid #2c5bb4}.qcard.red{left:840px;border:4px solid #c62828}
-  .qtext{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font-size:29px;font-weight:800;color:#3b2a14;line-height:1.2}
+  .qtext{flex:1;min-height:0;overflow:hidden;white-space:pre-line;display:flex;align-items:center;justify-content:center;text-align:center;font-size:29px;font-weight:800;color:#3b2a14;line-height:1.2}
   .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .opt{font:inherit;font-size:23px;font-weight:700;padding:12px 8px;min-height:62px;border-radius:14px;border:3px solid #c9a15a;background:rgba(255,255,255,.72);color:#3b2a14;cursor:pointer}
   .blue .opt:hover{background:#dbe7ff}.red .opt:hover{background:#ffe0e0}
@@ -102,8 +102,9 @@
   .fbcard .n{font-size:22px}.fbcard .e{font-size:70px}.fbcard .c{font-size:26px}
 
   /* Buttons + overlay */
-  #restart,#mute{position:absolute;left:780px;top:12px;width:40px;height:40px;border-radius:50%;border:3px solid #333;background:#fff;font-size:22px;cursor:pointer;z-index:40;padding:0}
+  #restart,#mute,#help{position:absolute;left:780px;top:12px;width:40px;height:40px;border-radius:50%;border:3px solid #333;background:#fff;font-size:22px;cursor:pointer;z-index:40;padding:0}
   #mute{top:58px;font-size:19px}
+  #help{top:104px;font-size:24px;font-weight:900;color:#333;font-family:inherit}
   #overlay,#resume{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:100}
   #overlay .box,#resume .box{background:#fff;border-radius:28px;padding:40px 70px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.5);border:8px solid}
   #overlay h1,#resume h1{margin:0 0 10px;font-size:64px}
@@ -114,6 +115,127 @@
   #resume h1{color:#7a5a00}
   #resume button{margin:0 12px}
   #rcont{background:#2e9e44}#rnew{background:#6b6f78}
+
+  /* Intro + tutorial */
+  #intro{position:absolute;inset:0;z-index:120;display:none;overflow:hidden;background:#2b4fa8}
+  :where(#intro button){font:inherit;cursor:pointer;border:none;color:#fff;font-weight:900}
+
+  /* animated scene behind the title */
+  .iscene{position:absolute;inset:0;overflow:hidden}
+  .isky{position:absolute;inset:0;background:linear-gradient(#0a1030 0%,#1c2c6e 28%,#4a62b4 52%,#b48aa8 72%,#f2b07a 100%)}
+  .isun{position:absolute;left:50%;top:-120px;width:1100px;height:900px;margin-left:-550px;
+    background:radial-gradient(closest-side,rgba(190,200,255,.45),rgba(140,160,255,.18) 45%,rgba(120,140,255,0) 75%);animation:glow 5s ease-in-out infinite}
+  .icloud{position:absolute;height:60px;border-radius:60px;background:#6f7fb8;opacity:.55;filter:blur(.5px);animation:drift linear infinite}
+  .icloud::before,.icloud::after{content:"";position:absolute;background:#6f7fb8;border-radius:50%}
+  .icloud::before{width:70px;height:70px;left:26px;top:-34px}
+  .icloud::after{width:96px;height:96px;left:80px;top:-52px}
+  .icloud.c1{top:455px;width:200px;animation-duration:90s;animation-delay:-20s}
+  .icloud.c2{top:395px;width:150px;transform:scale(.8);animation-duration:120s;animation-delay:-70s;opacity:.75}
+  .icloud.c3{top:520px;width:240px;animation-duration:100s;animation-delay:-45s;opacity:.8}
+  .ihills{filter:brightness(.62) saturate(.85);position:absolute;left:0;right:0;bottom:200px;height:330px;
+    background:
+      radial-gradient(ellipse 520px 250px at 18% 100%,#5fa8a0 0 98%,transparent 100%),
+      radial-gradient(ellipse 640px 300px at 55% 100%,#4f9b94 0 98%,transparent 100%),
+      radial-gradient(ellipse 560px 230px at 90% 100%,#5fa8a0 0 98%,transparent 100%),
+      radial-gradient(ellipse 760px 170px at 35% 100%,#7bc05a 0 98%,transparent 100%),
+      radial-gradient(ellipse 820px 190px at 80% 100%,#6fb552 0 98%,transparent 100%)}
+  .iground{filter:brightness(.66) saturate(.85);position:absolute;left:0;right:0;bottom:0;height:250px;
+    background:linear-gradient(#8ec35a 0,#8ec35a 34%,#8b5e3c 34%,#8b5e3c 40%,#9a9a9a 40%,#7d7d7d 100%);box-shadow:inset 0 6px 0 rgba(255,255,255,.18)}
+  .iart{position:absolute;bottom:182px;width:360px;display:flex;flex-direction:column;align-items:center;animation:bob 3.4s ease-in-out infinite;z-index:3}
+  .iart.blue{left:14px}.iart.red{right:14px;animation-delay:-1.7s}
+  .iart .fbcastle{font-size:200px;width:auto;height:auto}
+
+  /* lightning silhouette in the middle, then the strike */
+  .ibolt{position:absolute;left:50%;top:70px;width:300px;height:620px;margin-left:-150px;z-index:4;pointer-events:none;overflow:visible}
+  .ibolt path{fill:#ffe45e;stroke:#fff6b0;stroke-width:3;stroke-linejoin:round;opacity:0;
+    animation:boltstrike 1.6s 2s ease-out forwards}
+  .iflash{position:absolute;inset:0;z-index:5;background:#fff;opacity:0;pointer-events:none;animation:flash .7s 2s ease-out both}
+  .iscene{animation:rumble .45s 2s linear both}
+
+  /* title + pill buttons */
+  .ihome{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:44px;transition:opacity .3s;pointer-events:none}
+  .ihome > *{pointer-events:auto}
+  #intro.tut .ihome{opacity:0;pointer-events:none}
+  #intro.tut .ihome > *{pointer-events:none}
+  .ititle{display:flex;flex-direction:column;align-items:center;margin:0 0 34px;font-size:150px;line-height:.98;font-weight:900;letter-spacing:8px;
+    -webkit-text-stroke:12px #fff;paint-order:stroke fill;text-shadow:0 10px 0 rgba(0,0,0,.3),0 0 40px rgba(255,236,150,.55)}
+  .ititle span{display:block;opacity:0}
+  .ititle .b{color:#2c5bb4;animation:burst .8s 2.1s cubic-bezier(.2,1.5,.4,1) both}
+  .ititle .r{color:#d42a2a;animation:burst .8s 2.32s cubic-bezier(.2,1.5,.4,1) both}
+  .ibtns{display:flex;flex-direction:column;align-items:center;gap:20px;margin-top:6px}
+  .ibtns button{opacity:0}
+  #istart{position:relative;overflow:hidden;font-size:54px;padding:16px 110px;border-radius:999px;letter-spacing:5px;
+    background:linear-gradient(#ffe45e,#f5a800);color:#4a2e00;border:5px solid #fff;
+    box-shadow:0 9px 0 #b57700,0 16px 30px rgba(0,0,0,.45);text-shadow:0 2px 0 rgba(255,255,255,.5);
+    animation:pillin .6s 3.2s cubic-bezier(.2,1.4,.4,1) both,ring 1.8s 3.9s ease-out infinite;transition:transform .1s}
+  #istart::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.7),transparent);transform:skewX(-20deg);animation:shine 3s 4.5s infinite}
+  #istart:hover{transform:scale(1.05)}
+  #istart:active{transform:translateY(6px);box-shadow:0 3px 0 #b57700}
+  #ihow{font-size:28px;padding:11px 44px;border-radius:999px;background:rgba(10,16,48,.6);border:3px solid rgba(255,255,255,.85);
+    -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);animation:pillin .6s 3.45s cubic-bezier(.2,1.4,.4,1) both}
+  #ihow:hover{background:rgba(10,16,48,.8)}
+  #ihow:active{transform:translateY(3px)}
+
+  /* tutorial panel (shown over the dimmed scene) */
+  .idim{position:absolute;inset:0;z-index:7;background:radial-gradient(ellipse at 50% 45%,rgba(30,45,90,.78),rgba(8,10,22,.93));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
+  #intro.tut .idim{opacity:1}
+  #intro .ipanel{position:absolute;left:50%;top:50%;z-index:8;width:1240px;height:700px;margin:-350px 0 0 -620px;box-sizing:border-box;border-radius:34px;border:8px solid #7a5a00;
+    background:linear-gradient(#fff6dc,#f3deaa);box-shadow:0 14px 50px rgba(0,0,0,.6),inset 0 0 0 4px rgba(255,255,255,.55),inset 0 0 60px rgba(150,105,40,.3);
+    color:#3b2a14;text-align:center;overflow:hidden;display:none}
+  #intro.tut .ipanel{display:block}
+  #intro .itut{position:absolute;inset:0;display:flex;flex-direction:column;padding:34px 56px 28px}
+
+  .tclose{position:absolute;right:22px;top:18px;width:46px;height:46px;border-radius:50%;background:#6b6f78;font-size:24px;padding:0;z-index:2}
+  .tprog{height:6px;border-radius:3px;background:rgba(122,90,0,.2);margin:10px auto 0;width:420px;overflow:hidden;visibility:hidden}
+  .tprog.on{visibility:visible}
+  .tprog i{display:block;height:100%;width:0;background:#d9a400}
+  .tprog i.run{animation:prog linear forwards}
+  @keyframes prog{from{width:0}to{width:100%}}
+  .ttop{font-size:19px;font-weight:900;letter-spacing:4px;color:#7a5a00}
+  .tbody{flex:1;display:flex;align-items:center;gap:44px;text-align:left;min-height:0}
+  .ticon{flex:none;width:200px;height:200px;border-radius:50%;background:radial-gradient(#fff,#ffe9a8);border:7px solid #d9a400;display:flex;align-items:center;justify-content:center;font-size:104px;box-shadow:0 8px 0 rgba(122,90,0,.25)}
+  .ttext{flex:1}
+  .ttext h2{margin:0 0 14px;font-size:50px;line-height:1.05;color:#2c3e78}
+  .ttext p{margin:0 0 12px;font-size:28px;line-height:1.32;font-weight:600;color:#3b2a14}
+  .ttext b{color:#7a5a00}
+  .ttext .good{color:#1f8a34}.ttext .bad{color:#c62828}
+  .tnav{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:6px}
+  .tnav button{font-size:28px;padding:12px 34px;border-radius:18px;min-width:190px}
+  #tback{background:#6b6f78;box-shadow:0 5px 0 #4a4e57}
+  #tnext{background:#2c5bb4;box-shadow:0 5px 0 #1b3d80}
+  #tnext.go{background:#2e9e44;box-shadow:0 5px 0 #1f7430}
+  #tback:disabled{visibility:hidden}
+  .tnav button:active{transform:translateY(3px)}
+  .tdots{display:flex;gap:12px}
+  .tdots i{width:16px;height:16px;border-radius:50%;background:#c9a15a;opacity:.5;cursor:pointer}
+  .tdots i.on{background:#2c5bb4;opacity:1;transform:scale(1.35)}
+
+  .demo{margin-top:6px;background:rgba(255,255,255,.55);border:4px solid #c9a15a;border-radius:18px;padding:12px 16px;max-width:560px}
+  .demo .dq{font-size:26px;font-weight:800;text-align:center;margin-bottom:10px}
+  .demo .do{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .demo .do span{font-size:22px;font-weight:700;text-align:center;padding:8px;border-radius:12px;border:3px solid #c9a15a;background:rgba(255,255,255,.8)}
+  .demo .do span.ok{background:#5ed36e;border-color:#2c9a3c;color:#fff}
+  .ucards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+  .ucard{background:linear-gradient(#6d7380,#3a3e48);border:4px solid #2c5bb4;border-radius:16px;padding:10px 6px;text-align:center;color:#fff}
+  .ucard .ue{font-size:52px;line-height:1.1}
+  .ucard .un{font-size:20px;font-weight:900;letter-spacing:1px}
+  .ucard .uc{font-size:22px;font-weight:900;color:#ffe27a}
+  .ucard .up{font-size:17px;font-weight:700;opacity:.9}
+  .tstep{animation:stepin .35s ease both}
+
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes titlein{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+  @keyframes stepin{from{transform:translateX(24px);opacity:0}to{transform:translateX(0);opacity:1}}
+  @media (prefers-reduced-motion:reduce){.iscene,.iflash,.ibolt path,.ititle span,.ibtns button,#istart::after,.isun,.icloud,.iart{animation:none!important}.ititle span,.ibtns button{opacity:1}.ibolt,.iflash{display:none}}
+  @keyframes drift{from{left:-320px}to{left:1700px}}
+  @keyframes glow{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+  @keyframes boltstrike{0%{opacity:0}4%{opacity:1;fill:#fffbe0;stroke:#fff;opacity:1;filter:drop-shadow(0 0 40px #ffe86a) drop-shadow(0 0 90px #fff)}35%{fill:#ffe45e;stroke:#fff6b0;opacity:1;filter:drop-shadow(0 0 30px #ffcf33)}100%{fill:#ffe45e;stroke:#fff6b0;opacity:0;filter:drop-shadow(0 0 10px #ffcf33)}}
+  @keyframes flash{0%{opacity:0}8%{opacity:.95}22%{opacity:.15}34%{opacity:.8}100%{opacity:0}}
+  @keyframes rumble{0%,100%{transform:translate(0,0)}15%{transform:translate(-9px,4px)}35%{transform:translate(8px,-5px)}55%{transform:translate(-6px,3px)}75%{transform:translate(4px,-2px)}}
+  @keyframes burst{0%{transform:scale(.2) rotate(-6deg);opacity:0;filter:brightness(3)}55%{transform:scale(1.1) rotate(1deg);opacity:1;filter:brightness(1.6)}100%{transform:scale(1) rotate(0);opacity:1;filter:brightness(1)}}
+  @keyframes pillin{from{transform:translateY(40px) scale(.85);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+  @keyframes ring{0%{box-shadow:0 9px 0 #b57700,0 16px 30px rgba(0,0,0,.45),0 0 0 0 rgba(255,228,94,.75)}70%,100%{box-shadow:0 9px 0 #b57700,0 16px 30px rgba(0,0,0,.45),0 0 0 36px rgba(255,228,94,0)}}
+  @keyframes shine{0%{left:-60%}35%,100%{left:140%}}
   @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
   @keyframes rise{from{transform:translateY(0);opacity:1}to{transform:translateY(-70px);opacity:0}}
   @keyframes lunge{0%,100%{transform:translateX(0)}50%{transform:translateX(14px)}}
@@ -128,6 +250,31 @@
   <button id="restart" title="Restart">&#8635;</button>
   <button id="mute" title="Sound on/off">&#128266;</button>
   <div id="overlay"><div class="box" id="obox"><h1 id="otitle"></h1><p>The enemy castle has fallen - great teamwork!</p><button id="oagain">Play again</button></div></div>
+  <button id="help" title="How to play">?</button>
+  <div id="intro">
+    <div class="iscene">
+      <div class="isky"></div><div class="isun"></div>
+      <div class="icloud c1"></div><div class="icloud c2"></div><div class="icloud c3"></div>
+      <div class="ihills"></div><div class="iground"></div>
+      <div class="iart blue" id="iartB"></div><div class="iart red" id="iartR"></div>
+      <svg class="ibolt" viewBox="0 0 200 400" aria-hidden="true"><path d="M124 0 L28 216 L92 216 L56 400 L176 154 L106 154 L152 0 Z"/></svg>
+      <div class="iflash"></div>
+    </div>
+    <div class="ihome">
+      <h1 class="ititle"><span class="b">CASTLE</span><span class="r">BUSTERS</span></h1>
+      <div class="ibtns"><button id="istart">&#9654; START</button><button id="ihow">&#128214; How to play</button></div>
+    </div>
+    <div class="idim"></div>
+    <div class="ipanel">
+      <div class="itut">
+        <button class="tclose" id="tclose" title="Close">&#10005;</button>
+        <div class="ttop" id="ttop"></div>
+        <div class="tprog" id="tprog"><i id="tbar"></i></div>
+        <div class="tbody" id="tbody"></div>
+        <div class="tnav"><button id="tback">&#8592; Back</button><div class="tdots" id="tdots"></div><button id="tnext">Next &#8594;</button></div>
+      </div>
+    </div>
+  </div>
   <div id="resume"><div class="box"><h1>Welcome back!</h1><p id="rsum"></p><button id="rcont">Continue game</button><button id="rnew">New game</button></div></div>
 </div>
 
@@ -155,29 +302,55 @@ const UNITS = [
   { key:'beast',   name:'BEAST',   cost:50, dmg:50, speed:55,  range:0,   d:128, emoji:'\u{1F479}' }
 ];
 
-/* ========================= SAMPLE QUESTIONS =========================
-   options: 4 choices, answer: index (0-3) of the correct one.            */
+/* ============================ QUESTIONS (45) ============================
+   options: 4 choices, answer: index (0-3) of the correct one.
+   Each team gets its own shuffled deck, and the 4 options are shuffled on every question. */
 const QUESTIONS = [
-  { q:"7 \u00D7 8 = ?", options:["54","56","58","64"], answer:1 },
-  { q:"Which number is prime?", options:["21","27","29","33"], answer:2 },
-  { q:"Solve: 2x + 6 = 14. What is x?", options:["3","4","5","8"], answer:1 },
-  { q:"What is the plural of \"child\"?", options:["childs","childes","children","childrens"], answer:2 },
-  { q:"Choose the correct sentence.", options:["She doesn't like pizza.","She don't like pizza.","She not like pizza.","She no like pizza."], answer:0 },
-  { q:"At sea level, water boils at ___ \u00B0C.", options:["50","90","100","120"], answer:2 },
-  { q:"Which planet is called the Red Planet?", options:["Venus","Mars","Jupiter","Saturn"], answer:1 },
-  { q:"\u221A144 = ?", options:["10","11","12","14"], answer:2 },
-  { q:"What is the capital of T\u00FCrkiye?", options:["Istanbul","Izmir","Ankara","Bursa"], answer:2 },
-  { q:"What is the past tense of \"go\"?", options:["goed","went","gone","going"], answer:1 },
-  { q:"15% of 200 = ?", options:["20","25","30","35"], answer:2 },
-  { q:"Which gas do plants take in for photosynthesis?", options:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen"], answer:2 },
-  { q:"What is the perimeter of a square with side 9 cm?", options:["18 cm","27 cm","36 cm","81 cm"], answer:2 },
-  { q:"What is the opposite of \"ancient\"?", options:["old","modern","huge","famous"], answer:1 },
-  { q:"The angles of a triangle add up to ...", options:["90\u00B0","180\u00B0","270\u00B0","360\u00B0"], answer:1 },
-  { q:"Which part of the cell produces energy?", options:["Nucleus","Ribosome","Mitochondria","Vacuole"], answer:2 },
-  { q:"I have lived here ___ 2015.", options:["for","since","during","ago"], answer:1 },
-  { q:"3\u00B2 + 4\u00B2 = ?", options:["7","12","25","49"], answer:2 },
-  { q:"Which word is a noun?", options:["quickly","happiness","beautiful","run"], answer:1 },
-  { q:"What is the chemical symbol for gold?", options:["Go","Gd","Au","Ag"], answer:2 }
+  { q:"I ____ yoga classes every Wednesday and Saturday.", options:["accept", "attend", "invite", "occur"], answer:1 },
+  { q:"You can trust your real friends because they always ____ you ____ when you need help.", options:["back up", "come over", "count on", "get on well with"], answer:0 },
+  { q:"Here's a quick ____ to your question.", options:["event", "invitation", "response", "apology"], answer:2 },
+  { q:"True friendship ____ when someone knows and supports you.", options:["accepts", "attends", "occurs", "invites"], answer:2 },
+  { q:"If you ____ the invitation, you can ask for more information about the event.", options:["apologize", "accept", "attend", "back up"], answer:1 },
+  { q:"We always ____ each other, especially when things get difficult.", options:["count on", "come over", "get on well with", "have things in common"], answer:0 },
+  { q:"I'm at home. Would you like to ____ for dinner?", options:["attend", "invite", "come over", "back up"], answer:2 },
+  { q:"His family ____ me to stay with them for a few weeks.", options:["occurred", "invited", "accepted", "counted on"], answer:1 },
+  { q:"We sometimes argue, but I usually ____ her.", options:["count on", "get on well with", "back up", "have things in common"], answer:1 },
+  { q:"Which word means extremely interesting and exciting?", options:["Occupied", "Stuffed", "Thrilling", "Ordinary"], answer:2 },
+  { q:"No more food for me, thanks. I'm ____!", options:["occupied", "stuffed", "thrilling", "exhausted"], answer:1 },
+  { q:"She ____ for not accepting our invitation. She was really sorry.", options:["responded", "invited", "apologized", "occurred"], answer:2 },
+  { q:"I didn't think Larry and Patricia ____ , but they enjoyed talking all evening.", options:["got on well", "counted on", "backed up", "had things in common"], answer:3 },
+  { q:"Which word means a place where people pay to watch films?", options:["Theatre", "Movie theater", "Concert hall", "Library"], answer:1 },
+  { q:"He is fully ____ with work. I cannot reach him.", options:["thrilled", "stuffed", "occupied", "available"], answer:2 },
+  { q:"She's a very ____ woman who is always there to help people in need.", options:["honest", "caring", "loyal", "calm"], answer:1 },
+  { q:"He is ____. I can't trust him because I caught him lying.", options:["reliable", "outgoing", "dishonest", "laid-back"], answer:2 },
+  { q:"My son owes his success to his ____ lifestyle. He exercises regularly and studies efficiently.", options:["self-disciplined", "fashionable", "solemn", "sharing"], answer:0 },
+  { q:"She always arrives on time for her appointments. She's very ____.", options:["outgoing", "punctual", "reliable", "honest"], answer:1 },
+  { q:"Which word describes someone who enjoys meeting people and making new friends?", options:["Calm", "Caring", "Outgoing", "Laid-back"], answer:2 },
+  { q:"My sister always looks stylish because she likes wearing ____ clothes.", options:["solemn", "fashionable", "boring", "awesome"], answer:1 },
+  { q:"Stella is a ____ girl. She never gets worried about small problems.", options:["dishonest", "self-disciplined", "laid-back", "punctual"], answer:2 },
+  { q:"Bill and I are always ____ with each other. We never tell lies.", options:["loyal", "honest", "sharing", "outgoing"], answer:1 },
+  { q:"She is a ____ person. She always gives her snacks to her friends.", options:["caring", "reliable", "sharing", "solemn"], answer:2 },
+  { q:"The movie was so ____ that I fell asleep while watching it.", options:["awesome", "fashionable", "boring", "thrilling"], answer:2 },
+  { q:"Which word means extremely impressive or amazing?", options:["Awesome", "Solemn", "Calm", "Honest"], answer:0 },
+  { q:"It's important to stay ____ during an emergency.", options:["outgoing", "calm", "dishonest", "fashionable"], answer:1 },
+  { q:"He was a very ____ man. You could always trust him to keep his promises.", options:["boring", "laid-back", "reliable", "sharing"], answer:2 },
+  { q:"I become a ____ girl when I am with my aunt. We read books and visit museums.", options:["solemn", "outgoing", "awesome", "caring"], answer:0 },
+  { q:"Dogs are our ____ friends. They never leave us.", options:["punctual", "loyal", "dishonest", "self-disciplined"], answer:1 },
+  { q:"____ clothes are suitable for everyday situations and are not formal.", options:["Formal", "Casual", "Stylish", "Individual"], answer:1 },
+  { q:"The teacher has prepared a few different ____ games to attract students' attention.", options:["relaxing", "ridiculous", "educational", "unbearable"], answer:2 },
+  { q:"It was a ____ performance by the actor. You should definitely watch this movie!", options:["healthy", "individual", "fantastic", "casual"], answer:2 },
+  { q:"The restaurant offers a variety of ____ foods.", options:["healthy", "loud", "formal", "ridiculous"], answer:0 },
+  { q:"The team's performance last night was very ____. They did a great job!", options:["relaxed", "impressive", "unbearable", "casual"], answer:1 },
+  { q:"I like ____ sports such as swimming and archery.", options:["individual", "educational", "stylish", "formal"], answer:0 },
+  { q:"Heavy metal music is not for everyone. It is too ____.", options:["relaxing", "healthy", "loud", "calm"], answer:2 },
+  { q:"My best friend is such a ____ person that he never worries about anything.", options:["ridiculous", "relaxed", "impressive", "unbearable"], answer:1 },
+  { q:"On my last holiday, I did a lot of ____ activities such as trekking and yoga.", options:["loud", "formal", "relaxing", "individual"], answer:2 },
+  { q:"I am not a fan of romantic comedies. I think they are ____.", options:["fantastic", "ridiculous", "healthy", "educational"], answer:1 },
+  { q:"Her preference is for comfortable rather than ____ clothes.", options:["stylish", "casual", "formal", "individual"], answer:0 },
+  { q:"Roger seemed confident and ____ before the important match.", options:["loud", "unbearable", "calm", "ridiculous"], answer:2 },
+  { q:"Ally can't stand listening to techno music. It is ____ for him.", options:["impressive", "unbearable", "relaxing", "fantastic"], answer:1 },
+  { q:"It is suggested to wear formal clothes rather than ____ clothes for a job interview.", options:["smart", "educational", "healthy", "individual"], answer:0 },
+  { q:"We always wore ____ clothes at school. It was a must.", options:["casual", "relaxed", "formal", "stylish"], answer:2 }
 ];
 
 /* ============================ HELPERS ============================ */
@@ -218,6 +391,7 @@ const castleEl = {}, castleW = {};
 const ui = {};                    // per-team DOM refs
 let units = [];
 let running = false;
+let helpPaused = false;        // true while the in-game help screen has the game paused
 let last = 0;
 
 /* ============================== BUILD ============================== */
@@ -278,11 +452,19 @@ function nextQuestion(team) {
   st.opts = shuffle(q.options.map((text, i) => ({ text, ok: i === q.answer })));
   renderQuestion(team);
 }
+/* Shrink long questions so they always fit inside the card. */
+function fitQuestionText(box, span) {
+  let size = 29;
+  box.style.fontSize = size + 'px';
+  while (size > 17 && span.offsetHeight > box.clientHeight) { size -= 1; box.style.fontSize = size + 'px'; }
+}
 function renderQuestion(team) {
   const st = S[team], u = ui[team], q = QUESTIONS[st.qi];
   st.locked = false;
   u.card.classList.remove('locked');
-  u.qtext.textContent = q.q;
+  u.qtext.innerHTML = '';
+  const qs = document.createElement('span'); qs.textContent = q.q; u.qtext.appendChild(qs);
+  fitQuestionText(u.qtext, qs);
   u.opts.innerHTML = '';
   st.opts.forEach((o, idx) => {
     const b = el('button', 'opt');
@@ -292,6 +474,11 @@ function renderQuestion(team) {
   });
 }
 
+// Load the next question. If the game is paused by the help screen, remember to do it when play resumes.
+function advance(team) {
+  if (running) nextQuestion(team);
+  else if (helpPaused) S[team].needNext = true;
+}
 function answer(team, idx, btn) {
   const st = S[team];
   if (!running || st.locked) return;
@@ -310,12 +497,12 @@ function answer(team, idx, btn) {
       floatText(team === 'blue' ? 470 : 1290, STAGE_H - 160, 'Taxes unlocked!', 'coin');
     }
     updateTaxLabel(team);
-    setTimeout(() => running && nextQuestion(team), CONFIG.CORRECT_DELAY_MS);
+    setTimeout(() => advance(team), CONFIG.CORRECT_DELAY_MS);
   } else {
     btn.classList.add('bad');
     SFX.wrong();
     buttons.forEach((b, i) => { if (st.opts[i].ok) b.classList.add('good'); b.disabled = true; });
-    setTimeout(() => running && nextQuestion(team), CONFIG.WRONG_LOCK_MS);
+    setTimeout(() => advance(team), CONFIG.WRONG_LOCK_MS);
   }
   buttons.forEach(b => b.disabled = true);
 }
@@ -702,6 +889,124 @@ function showResume(sv) {
   document.getElementById('rnew').onclick  = () => { storeClear(); box.style.display = 'none'; resetGame(); };
 }
 
+/* ============================== INTRO + TUTORIAL ============================== */
+const introEl = document.getElementById('intro');
+let introMode = 'start';      // 'start' = opened at the beginning, 'help' = opened with the ? button during play
+let tutStep = 0;
+const cap = w => w.charAt(0) + w.slice(1).toLowerCase();
+
+function tutorialSteps() {
+  const melee  = UNITS.filter(u => !u.range).map(u => '<b>' + cap(u.name) + '</b>').join(' and ');
+  const ranged = UNITS.filter(u =>  u.range).map(u => '<b>' + cap(u.name) + '</b>').join(' and ');
+  const cards = UNITS.map(u => `<div class="ucard"><div class="ue">${u.emoji}</div><div class="un">${u.name}</div><div class="uc">${u.cost} \u{1FA99}</div><div class="up">Power ${u.dmg}</div></div>`).join('');
+  return [
+    { icon: '❓', title: 'Answer the questions',
+      html: `<p>Each team has its own question card. Tap the <b>correct answer</b>.</p>
+             <p><span class="good">Right answer: +${CONFIG.COINS_PER_CORRECT} \u{1FA99}</span> &nbsp;&bull;&nbsp; <span class="bad">Wrong answer: wait a moment</span></p>
+             <div class="demo"><div class="dq">I ____ to school every day.</div><div class="do"><span class="ok">go</span><span>goes</span><span>going</span><span>went</span></div></div>` },
+    { icon: '\u{1FA99}', title: 'Buy heroes with coins',
+      html: `<p>Tap a hero card at the bottom of your side. You need enough coins!</p><div class="ucards">${cards}</div>` },
+    { icon: '⚔️', title: 'Heroes march and fight',
+      html: `<p>Your heroes walk to the enemy castle and attack it.</p>
+             <p>${melee} fight up close. ${ranged} shoot from far away.</p>
+             <p>When two enemy heroes meet, the <b>stronger hero wins</b> and keeps the leftover power.</p>` },
+    { icon: '\u{1F4B0}', title: 'Collect taxes',
+      html: `<p>After <b>${CONFIG.TAX_AFTER_CORRECT} correct answers</b>, your castle collects taxes: <b>+${CONFIG.TAX_COINS} \u{1FA99} every ${CONFIG.TAX_INTERVAL_MS / 1000} seconds</b>.</p>
+             <p>If your team has no correct answer for ${CONFIG.TAX_IDLE_MS / 1000} seconds, taxes <b>pause</b>. One correct answer starts them again!</p>` },
+    { icon: '\u{1F3C6}', title: 'Destroy the enemy castle!',
+      html: `<p>Each castle has <b>${CONFIG.CASTLE_HP} HP</b>. Every hit takes some away. The first team to destroy the enemy castle <b>wins</b>!</p>
+             <p>Tips: talk with your team, answer fast and buy heroes often.</p>
+             <p>Buttons: &#8635; restart &nbsp;&bull;&nbsp; &#128266; sound &nbsp;&bull;&nbsp; ? help</p>` }
+  ];
+}
+function renderTut() {
+  const steps = tutorialSteps(), st = steps[tutStep], last = tutStep === steps.length - 1;
+  document.getElementById('ttop').textContent = `HOW TO PLAY  •  ${tutStep + 1} / ${steps.length}`;
+  document.getElementById('tbody').innerHTML = `<div class="tbody tstep" style="width:100%"><div class="ticon">${st.icon}</div><div class="ttext"><h2>${st.title}</h2>${st.html}</div></div>`;
+  document.getElementById('tdots').innerHTML = steps.map((_, i) => `<i class="${i === tutStep ? 'on' : ''}" data-i="${i}"></i>`).join('');
+  document.getElementById('tback').disabled = tutStep === 0;
+  const nx = document.getElementById('tnext');
+  nx.textContent = last ? (introMode === 'help' ? '▶ Back to game' : '▶ START GAME') : 'Next →';
+  nx.classList.toggle('go', last);
+}
+/* The tutorial plays by itself on the intro screen: it moves to the next step every few seconds.
+   Any click on Back / Next / the dots takes over manually. Set INTRO_AUTOPLAY to false to switch this off. */
+const INTRO_AUTOPLAY = true;
+const AUTOPLAY_STEP_MS = 7000;
+let autoTimer = null, autoOpenTimer = null;
+function stopAuto() {
+  clearTimeout(autoTimer); autoTimer = null;
+  const pr = document.getElementById('tprog'); pr.classList.remove('on'); document.getElementById('tbar').classList.remove('run');
+}
+function scheduleAuto() {
+  stopAuto();
+  if (!INTRO_AUTOPLAY || introMode !== 'start' || tutStep >= tutorialSteps().length - 1) return;
+  const bar = document.getElementById('tbar');
+  document.getElementById('tprog').classList.add('on');
+  bar.style.animationDuration = AUTOPLAY_STEP_MS + 'ms';
+  void bar.offsetWidth; bar.classList.add('run');
+  autoTimer = setTimeout(() => { tutStep++; renderTut(); scheduleAuto(); }, AUTOPLAY_STEP_MS);
+}
+function openTutorial() { clearTimeout(autoOpenTimer); tutStep = 0; introEl.classList.add('tut'); renderTut(); scheduleAuto(); }
+function showIntroHome() { stopAuto(); introEl.classList.remove('tut'); }
+
+// resume play (and load any question that finished while the help screen was open)
+function resumeGame() {
+  running = true; helpPaused = false;
+  TEAMS.forEach(t => { if (S[t].needNext) { S[t].needNext = false; nextQuestion(t); } });
+}
+function startFromIntro() {
+  clearTimeout(autoOpenTimer); stopAuto();
+  introEl.style.display = 'none';
+  const sv = loadSaved();
+  if (sv) showResume(sv);        // a game was in progress: let the teacher choose Continue / New game
+  else resumeGame();
+}
+function closeHelp() {
+  introEl.style.display = 'none';
+  if (helpPaused) resumeGame();
+}
+function openHelp() {
+  if (introEl.style.display === 'flex') return;
+  helpPaused = running;
+  running = false;
+  introMode = 'help';
+  introEl.style.display = 'flex';
+  openTutorial();
+}
+function finishTutorial() { if (introMode === 'help') closeHelp(); else startFromIntro(); }
+
+document.getElementById('istart').addEventListener('click', startFromIntro);
+document.getElementById('ihow').addEventListener('click', openTutorial);
+document.getElementById('help').addEventListener('click', openHelp);
+document.getElementById('tback').addEventListener('click', () => { stopAuto(); if (tutStep > 0) { tutStep--; renderTut(); } });
+document.getElementById('tnext').addEventListener('click', () => { stopAuto(); if (tutStep < tutorialSteps().length - 1) { tutStep++; renderTut(); } else finishTutorial(); });
+document.getElementById('tdots').addEventListener('click', e => { const i = e.target.dataset && e.target.dataset.i; if (i != null) { stopAuto(); tutStep = +i; renderTut(); } });
+document.getElementById('tclose').addEventListener('click', () => { if (introMode === 'help') closeHelp(); else showIntroHome(); });
+addEventListener('keydown', e => {
+  if (introEl.style.display !== 'flex') return;
+  const tut = introEl.classList.contains('tut');
+  if (e.key === 'Escape') { document.getElementById('tclose').click(); }
+  else if (e.key === 'Enter' && !tut) { startFromIntro(); }
+  else if (e.key === 'ArrowRight' && tut) document.getElementById('tnext').click();
+  else if (e.key === 'ArrowLeft' && tut) document.getElementById('tback').click();
+});
+
+function buildIntroArt() {
+  // the two big castles (the rest of the intro scene is pure CSS)
+  [['iartB', true], ['iartR', false]].forEach(([id, left]) => {
+    const box = document.getElementById(id);
+    if (A.castles) {
+      const sc = 0.92 * STAGE_W / A.castles.naturalWidth * 1.3;
+      box.appendChild(slice(A.castles, left ? 0 : 0.84, left ? 0.16 : 1, sc));
+    } else {
+      const n = el('div', 'fbcastle', '\u{1F3F0}');
+      n.style.filter = left ? 'hue-rotate(200deg) saturate(2)' : 'hue-rotate(-20deg) saturate(2)';
+      box.appendChild(n);
+    }
+  });
+}
+
 /* ============================== START / END ============================== */
 function resetGame() {
   units.forEach(u => u.el.remove());
@@ -737,8 +1042,12 @@ document.getElementById('restart').addEventListener('click', () => { if (confirm
   A = { castles, blueCards, redCards, blueAttackers, redAttackers };
   TEAMS.forEach(t => { buildCastle(t); buildHud(t); buildCards(t); });
   resetGame();
-  const saved = loadSaved();
-  if (saved) { running = false; showResume(saved); }   // paused until the teacher chooses
+  running = false;                                      // paused until START is pressed on the intro screen
+  buildIntroArt();
+  introEl.style.display = 'flex';
+  document.getElementById('istart').focus({ preventScroll: true });
+  // the title and buttons appear first, then the tutorial starts playing on its own
+  if (INTRO_AUTOPLAY) autoOpenTimer = setTimeout(() => { if (introEl.style.display === 'flex' && !introEl.classList.contains('tut')) openTutorial(); }, 7000);
   requestAnimationFrame(tick);
   setInterval(saveGame, 1000);
   addEventListener('pagehide', saveGame);
